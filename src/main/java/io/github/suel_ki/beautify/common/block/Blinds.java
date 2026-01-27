@@ -1,17 +1,24 @@
 package io.github.suel_ki.beautify.common.block;
 
-import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import com.google.common.collect.ImmutableMap;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
+import io.github.suel_ki.beautify.client.tooltip.BaseTooltipComponent;
+import io.github.suel_ki.beautify.common.tooltip.BlockTooltip;
+import io.github.suel_ki.beautify.core.init.ComponentInit;
 import io.github.suel_ki.beautify.core.init.SoundInit;
 import io.github.suel_ki.beautify.util.BeautifyConfig;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponentGetter;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -35,7 +42,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class Blinds extends HorizontalDirectionalBlock {
+public class Blinds extends HorizontalDirectionalBlock implements BlockTooltip<Blinds.TooltipComponent> {
 	// Voxelshapes; Hidden = Blind not visible
 	private static final Map<Direction, VoxelShape> CLOSED_SHAPES = ImmutableMap.of(
 			Direction.NORTH, Block.box(0, 13, 13, 16, 16, 16),
@@ -299,16 +306,28 @@ public class Blinds extends HorizontalDirectionalBlock {
 		return shapes.get(facing);
 	}
 
-	@Override
-	public void appendHoverText(ItemStack stack, Item.TooltipContext tooltipContext, List<Component> component, TooltipFlag flag) {
-		if (!Screen.hasShiftDown()) {
-			component.add(Component.translatable("tooltip.beautify.shift").withStyle(ChatFormatting.YELLOW));
-		}
+    @Override
+    public DataComponentType<TooltipComponent> getTooltipType() {
+        return ComponentInit.BLINDS_TOOLTIP.get();
+    }
 
-		if (Screen.hasShiftDown()) {
-			component.add(Component.translatable("tooltip.beautify.blinds.1").withStyle(ChatFormatting.GRAY));
-			component.add(Component.translatable("tooltip.beautify.blinds.2").withStyle(ChatFormatting.GRAY));
-		}
-		super.appendHoverText(stack, tooltipContext, component, flag);
-	}
+    @Override
+    public TooltipComponent getTooltipComponent() {
+        return TooltipComponent.INSTANCE;
+    }
+
+    public static final class TooltipComponent extends BaseTooltipComponent {
+        public static final TooltipComponent INSTANCE = new TooltipComponent();
+
+        private TooltipComponent() {}
+
+        public static final Codec<TooltipComponent> CODEC = Codec.unit(TooltipComponent::new);
+        public static final StreamCodec<RegistryFriendlyByteBuf, TooltipComponent> STREAM_CODEC = StreamCodec.unit(INSTANCE);
+
+        @Override
+        public void addShiftTooltips(Item.TooltipContext context, Consumer<Component> consumer, TooltipFlag flag, DataComponentGetter data) {
+            consumer.accept(Component.translatable("tooltip.beautify.blinds.1").withStyle(ChatFormatting.GRAY));
+            consumer.accept(Component.translatable("tooltip.beautify.blinds.2").withStyle(ChatFormatting.GRAY));
+        }
+    }
 }

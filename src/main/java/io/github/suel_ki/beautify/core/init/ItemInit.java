@@ -3,14 +3,15 @@ package io.github.suel_ki.beautify.core.init;
 import io.github.suel_ki.beautify.Beautify;
 import io.github.suel_ki.beautify.common.block.HangingPot;
 import io.github.suel_ki.beautify.common.block.Trellis;
+import io.github.suel_ki.beautify.common.tooltip.BlockTooltip;
 import io.github.suel_ki.beautify.common.tooltip.PlantableItemStackTooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.item.*;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.FuelValues;
@@ -20,6 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 public final class ItemInit {
@@ -97,7 +99,13 @@ public final class ItemInit {
 
 	public static final DeferredItem<BlockItem> HANGING_POT_ITEM = registerBlockItem(BlockInit.HANGING_POT,
             (properties) -> new BlockItem(BlockInit.HANGING_POT.get(),
-					properties) {
+					properties.component(ComponentInit.HANGING_POT_TOOLTIP.get(), HangingPot.TooltipComponent.INSTANCE)) {
+
+                @Override
+                public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> consumer, TooltipFlag flag) {
+                    stack.addToTooltip(ComponentInit.HANGING_POT_TOOLTIP.get(), context, display, consumer, flag);
+                }
+
 				@Override
 				public Optional<TooltipComponent> getTooltipImage(@NotNull ItemStack stack) {
 					if (Screen.hasControlDown()) {
@@ -166,43 +174,67 @@ public final class ItemInit {
         return ITEMS.registerItem(key, func, new Item.Properties().useBlockDescriptionPrefix());
     }
 
-	private static DeferredItem<BlockItem> registerBlockItem(Holder<Block> block) {
-		return ITEMS.registerSimpleBlockItem(block);
+	private static DeferredItem<BlockItem> registerBlockItem(Holder<Block> holder) {
+        return registerBlockItem(holder,
+                (properties) -> {
+                    BlockTooltip<?> tooltipBlock = (BlockTooltip<?>) holder.value();
+                    return new BlockItem(holder.value(), properties.component((DataComponentType<Object>) tooltipBlock.getTooltipType(), tooltipBlock.getTooltipComponent())) {
+
+                        @Override
+                        public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> consumer, TooltipFlag flag) {
+                            stack.addToTooltip(tooltipBlock.getTooltipType(), context, display, consumer, flag);
+                        }
+                    };
+                });
 	}
 
     private static DeferredItem<BlockItem> registerBurnBlockItem(Holder<Block> holder, int burnTime) {
         return registerBlockItem(holder,
-                (properties) -> new BlockItem(holder.value(), properties) {
-                    @Override
-                    public int getBurnTime(ItemStack itemStack, @Nullable RecipeType<?> recipeType, FuelValues fuelValues) {
-                        return burnTime;
-                    }
+                (properties) -> {
+                    BlockTooltip<?> tooltipBlock = (BlockTooltip<?>) holder.value();
+                    return new BlockItem(holder.value(), properties.component((DataComponentType<Object>) tooltipBlock.getTooltipType(), tooltipBlock.getTooltipComponent())) {
+
+                        @Override
+                        public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> consumer, TooltipFlag flag) {
+                            stack.addToTooltip(tooltipBlock.getTooltipType(), context, display, consumer, flag);
+                        }
+
+                        @Override
+                        public int getBurnTime(ItemStack itemStack, @Nullable RecipeType<?> recipeType, FuelValues fuelValues) {
+                            return burnTime;
+                        }
+                    };
                 });
     }
     
 	private static DeferredItem<BlockItem> registerTrellis(Holder<Block> holder) {
-		return registerBlockItem(holder,
-                (properties) -> new BlockItem(holder.value(), properties) {
-			@Override
-			public Optional<TooltipComponent> getTooltipImage(@NotNull ItemStack stack) {
-				if (Screen.hasControlDown()) {
+        return registerBlockItem(holder,
+                (properties) -> new BlockItem(holder.value(), properties.component(ComponentInit.TRELLIS_TOOLTIP.get(), Trellis.TooltipComponent.INSTANCE)) {
+                    @Override
+                    public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> consumer, TooltipFlag flag) {
+                        stack.addToTooltip(ComponentInit.TRELLIS_TOOLTIP.get(), context, display, consumer, flag);
+                    }
 
-					List<ItemStack> plants = Trellis.VALID_FLOWERS
-							.stream()
-							.filter(item -> item != Items.AIR)
-							.map(ItemStack::new)
-							.toList();
-					return Optional.of(new PlantableItemStackTooltip(plants));
-				} else {
-					return super.getTooltipImage(stack);
-				}
-			}
+                    @Override
+                    public Optional<TooltipComponent> getTooltipImage(@NotNull ItemStack stack) {
+                        if (Screen.hasControlDown()) {
 
-            @Override
-            public int getBurnTime(ItemStack itemStack, @Nullable RecipeType<?> recipeType, FuelValues fuelValues) {
-                return 300;
-            }
+                            List<ItemStack> plants = Trellis.VALID_FLOWERS
+                                    .stream()
+                                    .filter(item -> item != Items.AIR)
+                                    .map(ItemStack::new)
+                                    .toList();
+                            return Optional.of(new PlantableItemStackTooltip(plants));
+                        } else {
+                            return super.getTooltipImage(stack);
+                        }
+                    }
 
-		});
-	}
+                    @Override
+                    public int getBurnTime(ItemStack itemStack, @Nullable RecipeType<?> recipeType, FuelValues fuelValues) {
+                        return 300;
+                    }
+
+                });
+    }
 }

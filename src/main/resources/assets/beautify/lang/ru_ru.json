@@ -57,7 +57,7 @@
     "block.beautify.warped_trellis": "Искаженный решетчатый экран",
     "block.beautify.botanist_workbench": "Стол для ботаника",
 
-    "entity.minecraft.villager.beautify.botanist": "Beautify",
+    "entity.beautify.villager.botanist": "Beautify",
 
     "sounds.beautify.bookstack_break": "Разрушение стопки книг",
     "sounds.beautify.bookstack_step": "Шаги по стопке книг",
@@ -70,6 +70,7 @@
 
     "tooltip.beautify.shift": "Удерживайте SHIFT для получения дополнительной информации.",
     "tooltip.beautify.plantlist": "Удерживайте CTRL для списка растений.",
+    "tooltip.beautify.plantable": "Растения, которые можно посадить:",
     "tooltip.beautify.bookstack.1": "Разместите случайную стопку книг, зажмите правую кнопку мыши на блоке, чтобы изменить модель.",
     "tooltip.beautify.bookstack.2": "Увеличивает мощность стола зачарований, как книжные полки.",
     "tooltip.beautify.botanist_workbench.1": "Стол для ботанических деревень, также подходит для декора.",

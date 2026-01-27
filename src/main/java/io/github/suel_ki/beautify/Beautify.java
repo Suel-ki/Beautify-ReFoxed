@@ -40,6 +40,7 @@ public class Beautify {
         SoundInit.SOUND_EVENTS.register(bus);
         ParticleInit.PARTICLE_TYPES.register(bus);
         CreativeModeTabInit.CREATIVE_MODE_TABS.register(bus);
+        ComponentInit.DATA_COMPONENT_TYPE.register(bus);
 
         modContainer.registerConfig(ModConfig.Type.SERVER, BeautifyConfig.SPEC);
 		// Add new buildings to villages
