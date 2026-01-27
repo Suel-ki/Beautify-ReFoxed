@@ -69,10 +69,10 @@ public class Beautify {
 		// The reason why is the empty processor list in the world's registry is not the
 		// same instance as in that field once the world is started up.
 		Holder<StructureProcessorList> emptyProcessorList = processorListRegistry
-				.getHolderOrThrow(EMPTY_PROCESSOR_LIST_KEY);
+				.getOrThrow(EMPTY_PROCESSOR_LIST_KEY);
 
 		// Grab the pool we want to add to
-		StructureTemplatePool pool = templatePoolRegistry.get(poolRL);
+		StructureTemplatePool pool = templatePoolRegistry.getValue(poolRL);
 		if (pool == null) {
 			return;
 		}
@@ -109,9 +109,9 @@ public class Beautify {
 	 */
     public void addNewVillageBuilding(final ServerAboutToStartEvent event) {
 		Registry<StructureTemplatePool> templatePoolRegistry = event.getServer().registryAccess()
-				.registry(Registries.TEMPLATE_POOL).orElseThrow();
+				.lookupOrThrow(Registries.TEMPLATE_POOL);
 		Registry<StructureProcessorList> processorListRegistry = event.getServer().registryAccess()
-				.registry(Registries.PROCESSOR_LIST).orElseThrow();
+				.lookupOrThrow(Registries.PROCESSOR_LIST);
 
 		int weight = BeautifyConfig.BOTANIST_SPAWN_WEIGHT.get();
 

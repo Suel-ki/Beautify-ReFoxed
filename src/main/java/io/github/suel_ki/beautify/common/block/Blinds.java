@@ -12,10 +12,10 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -82,7 +82,7 @@ public class Blinds extends HorizontalDirectionalBlock {
 	}
 	
 	@Override
-	public boolean propagatesSkylightDown(BlockState state, BlockGetter level, BlockPos pos) {
+	public boolean propagatesSkylightDown(BlockState state) {
 		return true;
 	}
 
@@ -105,10 +105,10 @@ public class Blinds extends HorizontalDirectionalBlock {
 	// OPEN: open <-> closed
 	// HIDDEN: false <-> true if below root
 	@Override
-	public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos,
-                                           Player player, InteractionHand hand, BlockHitResult hit) {
+	public InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos,
+                                       Player player, InteractionHand hand, BlockHitResult hit) {
 		if (level.isClientSide()) {
-			return ItemInteractionResult.SUCCESS;
+			return InteractionResult.SUCCESS;
 		}
 
 		// stores last value of blind
@@ -227,10 +227,10 @@ public class Blinds extends HorizontalDirectionalBlock {
 				level.playSound(null, pos,
 						currentlyOpen ? SoundInit.BLINDS_CLOSE.get() : SoundInit.BLINDS_OPEN.get(),
 						SoundSource.BLOCKS, 1, 1);
-				return ItemInteractionResult.SUCCESS;
+				return InteractionResult.SUCCESS;
 			}
 		}
-		return ItemInteractionResult.CONSUME;
+		return InteractionResult.CONSUME;
 	}
 
 	// returns: true/false if
@@ -275,7 +275,7 @@ public class Blinds extends HorizontalDirectionalBlock {
 	}
 
 	@Override
-	public void wasExploded(Level level, BlockPos pos, Explosion explosion) {
+	public void wasExploded(ServerLevel level, BlockPos pos, Explosion explosion) {
 		BlockState state = level.getBlockState(pos);
 		if (sameBlindType(level, pos.below(), state)) {
 			switchOpenUpdateHidden(level, pos.below(), state, true);

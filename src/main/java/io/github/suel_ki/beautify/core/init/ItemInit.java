@@ -6,8 +6,6 @@ import io.github.suel_ki.beautify.common.block.Trellis;
 import io.github.suel_ki.beautify.common.tooltip.PlantableItemStackTooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.Holder;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -15,38 +13,39 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.FuelValues;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
-import java.util.function.Supplier;
+import java.util.function.Function;
 
 public final class ItemInit {
 
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Beautify.MODID);
 
 	// trellis
-	public static final DeferredItem<BlockItem> OAK_TRELLIS_ITEM = registerTrellis(BlockInit.OAK_TRELLIS, 300);
+	public static final DeferredItem<BlockItem> OAK_TRELLIS_ITEM = registerTrellis(BlockInit.OAK_TRELLIS);
 
-	public static final DeferredItem<BlockItem> SPRUCE_TRELLIS_ITEM = registerTrellis(BlockInit.SPRUCE_TRELLIS, 300);
+	public static final DeferredItem<BlockItem> SPRUCE_TRELLIS_ITEM = registerTrellis(BlockInit.SPRUCE_TRELLIS);
 
-	public static final DeferredItem<BlockItem> BIRCH_TRELLIS_ITEM = registerTrellis(BlockInit.BIRCH_TRELLIS, 300);
+	public static final DeferredItem<BlockItem> BIRCH_TRELLIS_ITEM = registerTrellis(BlockInit.BIRCH_TRELLIS);
 
-	public static final DeferredItem<BlockItem> JUNGLE_TRELLIS_ITEM = registerTrellis(BlockInit.JUNGLE_TRELLIS, 300);
+	public static final DeferredItem<BlockItem> JUNGLE_TRELLIS_ITEM = registerTrellis(BlockInit.JUNGLE_TRELLIS);
 
-	public static final DeferredItem<BlockItem> ACACIA_TRELLIS_ITEM = registerTrellis(BlockInit.ACACIA_TRELLIS, 300);
+	public static final DeferredItem<BlockItem> ACACIA_TRELLIS_ITEM = registerTrellis(BlockInit.ACACIA_TRELLIS);
 
-	public static final DeferredItem<BlockItem> DARK_OAK_TRELLIS_ITEM = registerTrellis( BlockInit.DARK_OAK_TRELLIS, 300);
+	public static final DeferredItem<BlockItem> DARK_OAK_TRELLIS_ITEM = registerTrellis( BlockInit.DARK_OAK_TRELLIS);
 
-	public static final DeferredItem<BlockItem> MANGROVE_TRELLIS_ITEM = registerTrellis(BlockInit.MANGROVE_TRELLIS, 300);
+	public static final DeferredItem<BlockItem> MANGROVE_TRELLIS_ITEM = registerTrellis(BlockInit.MANGROVE_TRELLIS);
 
-	public static final DeferredItem<BlockItem> CRIMSON_TRELLIS_ITEM = registerTrellis(BlockInit.CRIMSON_TRELLIS, 300);
+	public static final DeferredItem<BlockItem> CRIMSON_TRELLIS_ITEM = registerTrellis(BlockInit.CRIMSON_TRELLIS);
 
-	public static final DeferredItem<BlockItem> CHERRY_TRELLIS_ITEM = registerTrellis(BlockInit.CHERRY_TRELLIS, 300);
+	public static final DeferredItem<BlockItem> CHERRY_TRELLIS_ITEM = registerTrellis(BlockInit.CHERRY_TRELLIS);
 
-	public static final DeferredItem<BlockItem> WARPED_TRELLIS_ITEM = registerTrellis(BlockInit.WARPED_TRELLIS, 300);
+	public static final DeferredItem<BlockItem> WARPED_TRELLIS_ITEM = registerTrellis(BlockInit.WARPED_TRELLIS);
 
 	// blinds
 	public static final DeferredItem<BlockItem> OAK_BLINDS_ITEM = registerBurnBlockItem(BlockInit.OAK_BLINDS, 300);
@@ -97,8 +96,8 @@ public final class ItemInit {
 	public static final DeferredItem<BlockItem> ROPE_ITEM = registerBurnBlockItem(BlockInit.ROPE, 100);
 
 	public static final DeferredItem<BlockItem> HANGING_POT_ITEM = registerBlockItem(BlockInit.HANGING_POT,
-            () -> new BlockItem(BlockInit.HANGING_POT.get(),
-					new Item.Properties()) {
+            (properties) -> new BlockItem(BlockInit.HANGING_POT.get(),
+					properties) {
 				@Override
 				public Optional<TooltipComponent> getTooltipImage(@NotNull ItemStack stack) {
 					if (Screen.hasControlDown()) {
@@ -162,8 +161,9 @@ public final class ItemInit {
 	// workbench
 	public static final DeferredItem<BlockItem> BOTANIST_WORKBENCH_ITEM = registerBlockItem(BlockInit.BOTANIST_WORKBENCH);
 
-    private static DeferredItem<BlockItem> registerBlockItem(Holder<Block> holder, Supplier<BlockItem> item) {
-        return ITEMS.register(key(holder), item);
+    private static DeferredItem<BlockItem> registerBlockItem(Holder<Block> holder, Function<Item.Properties, BlockItem> func) {
+        var key = holder.unwrapKey().orElseThrow().location().getPath();
+        return ITEMS.registerItem(key, func, new Item.Properties().useBlockDescriptionPrefix());
     }
 
 	private static DeferredItem<BlockItem> registerBlockItem(Holder<Block> block) {
@@ -171,18 +171,18 @@ public final class ItemInit {
 	}
 
     private static DeferredItem<BlockItem> registerBurnBlockItem(Holder<Block> holder, int burnTime) {
-        return ITEMS.register(key(holder),
-                () -> new BlockItem(holder.value(), new Item.Properties()) {
+        return registerBlockItem(holder,
+                (properties) -> new BlockItem(holder.value(), properties) {
                     @Override
-                    public int getBurnTime(ItemStack itemStack, @Nullable RecipeType<?> recipeType) {
+                    public int getBurnTime(ItemStack itemStack, @Nullable RecipeType<?> recipeType, FuelValues fuelValues) {
                         return burnTime;
                     }
                 });
     }
     
-	private static DeferredItem<BlockItem> registerTrellis(Holder<Block> holder, int burnTime) {
-		return ITEMS.register(key(holder),
-                () -> new BlockItem(holder.value(), new Item.Properties()) {
+	private static DeferredItem<BlockItem> registerTrellis(Holder<Block> holder) {
+		return registerBlockItem(holder,
+                (properties) -> new BlockItem(holder.value(), properties) {
 			@Override
 			public Optional<TooltipComponent> getTooltipImage(@NotNull ItemStack stack) {
 				if (Screen.hasControlDown()) {
@@ -199,14 +199,10 @@ public final class ItemInit {
 			}
 
             @Override
-            public int getBurnTime(ItemStack itemStack, @Nullable RecipeType<?> recipeType) {
-                return burnTime;
+            public int getBurnTime(ItemStack itemStack, @Nullable RecipeType<?> recipeType, FuelValues fuelValues) {
+                return 300;
             }
 
 		});
 	}
-
-    private static String key(Holder<Block> holder) {
-        return holder.unwrapKey().map(ResourceKey::location).map(ResourceLocation::getPath).orElseThrow();
-    }
 }
