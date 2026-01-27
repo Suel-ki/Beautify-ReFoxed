@@ -153,8 +153,8 @@ public class Trellis extends HorizontalDirectionalBlock {
 	}
 
 	@Override
-	public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state) {
-		return this.isFlowerless(state) ? super.getCloneItemStack(level, pos, state) : new ItemStack(getContent(state));
+	public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData, Player player) {
+		return this.isFlowerless(state) ? super.getCloneItemStack(level, pos, state, includeData, player) : new ItemStack(getContent(state));
 	}
 
 	private boolean isFlowerless(BlockState state) {
