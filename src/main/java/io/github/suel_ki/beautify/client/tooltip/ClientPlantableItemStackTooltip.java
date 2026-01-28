@@ -15,10 +15,10 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class ClientPlantableItemStackTooltip implements ClientTooltipComponent, TooltipComponent {
-    private static final ResourceLocation TEXTURE_LOCATION = ResourceLocation.withDefaultNamespace("container/bundle/slot");
+    private static final ResourceLocation TEXTURE_LOCATION = ResourceLocation.withDefaultNamespace("container/bundle/slot_background");
     private static final Component TEXT = Component.translatable("tooltip.beautify.plantable").withStyle(ChatFormatting.GREEN);
 
-    private static final int SLOT_SIZE = 18;
+    private static final int SLOT_SIZE = 24;
     private final int columns;
     private final List<ItemStack> plants;
 
@@ -43,9 +43,9 @@ public class ClientPlantableItemStackTooltip implements ClientTooltipComponent, 
 
         for (var plant : this.plants) {
 
-            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, TEXTURE_LOCATION, x - 1, y - 1, 0, 18, 20);
-            graphics.renderItem(plant, x, y);
-            graphics.renderItemDecorations(font, plant, x, y);
+            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, TEXTURE_LOCATION, x - 1, y - 1, 24, 24);
+            graphics.renderItem(plant, x + 3, y + 3);
+            graphics.renderItemDecorations(font, plant, x + 3, y + 3);
 
             x += slotSize;
 

@@ -76,7 +76,7 @@ public class BlockInit {
     // lamps
     public static final DeferredBlock<LampLightBulb> LAMP_LIGHT_BULB = register("lamp_light_bulb",
             LampLightBulb::new,
-            BlockBehaviour.Properties.of().mapColor(MapColor.METAL).noOcclusion()
+           BlockBehaviour.Properties.of().mapColor(MapColor.METAL).noOcclusion()
                     .strength(0.2f, 0.2f).sound(SoundType.LANTERN).lightLevel((state) -> {
                         if (state.getValue(LampLightBulb.ON)) {
                             return 14;
@@ -218,7 +218,7 @@ public class BlockInit {
             BlockBehaviour.Properties.ofFullCopy(Blocks.CRAFTING_TABLE));
 
     private static <T extends Block> DeferredBlock<T> register(String name, Function<BlockBehaviour.Properties, ? extends T> func, BlockBehaviour.Properties props) {
-        return BLOCKS.registerBlock(name, func, props);
+        return BLOCKS10.registerBlock(name, func, props);
     }
 
     private static DeferredBlock<LampCandelabra> registerLampCandelabra(String name) {
