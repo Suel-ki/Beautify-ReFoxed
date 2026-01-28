@@ -218,7 +218,7 @@ public class BlockInit {
             BlockBehaviour.Properties.ofFullCopy(Blocks.CRAFTING_TABLE));
 
     private static <T extends Block> DeferredBlock<T> register(String name, Function<BlockBehaviour.Properties, ? extends T> func, BlockBehaviour.Properties props) {
-        return BLOCKS10.registerBlock(name, func, props);
+        return BLOCKS.registerBlock(name, func, props);
     }
 
     private static DeferredBlock<LampCandelabra> registerLampCandelabra(String name) {
