@@ -47,8 +47,6 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 
 public class LampCandelabra extends LanternBlock implements BlockTooltip<LampCandelabra.TooltipComponent> {
 	public static final BooleanProperty ON = BooleanProperty.create("on");
@@ -154,7 +152,6 @@ public class LampCandelabra extends LanternBlock implements BlockTooltip<LampCan
 		return InteractionResult.SUCCESS;
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource rand) {
 		if (isOn(state)) {

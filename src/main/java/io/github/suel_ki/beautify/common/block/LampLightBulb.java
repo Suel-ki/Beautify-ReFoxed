@@ -31,8 +31,6 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 
 public class LampLightBulb extends LanternBlock implements BlockTooltip<LampLightBulb.TooltipComponent> {
 	public static final BooleanProperty ON = BooleanProperty.create("on");
@@ -62,7 +60,6 @@ public class LampLightBulb extends LanternBlock implements BlockTooltip<LampLigh
 		return InteractionResult.SUCCESS;
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource rand) {
 		double d0 = (double) pos.getX() + 0.5D;

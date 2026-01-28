@@ -123,6 +123,15 @@ public class TradesInit {
 
         if (event.getType() == ModVillagers.BOTANIST) {
             Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
+            ItemStack stack = new ItemStack(ItemInit.CHERRY_TRELLIS_ITEM.get(), 2);
+            int villagerLevel = 2;
+
+            trades.get(villagerLevel)
+                    .add((trader, rand) -> new MerchantOffer(new ItemCost(Items.EMERALD, 1), stack, 16, 3, 0.02F));
+        }
+
+        if (event.getType() == ModVillagers.BOTANIST) {
+            Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
             ItemStack stack = new ItemStack(ItemInit.WARPED_TRELLIS_ITEM.get(), 2);
             int villagerLevel = 2;
 

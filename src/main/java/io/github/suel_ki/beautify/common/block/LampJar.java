@@ -31,8 +31,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 
 public class LampJar extends LanternBlock implements BlockTooltip<LampJar.TooltipComponent> {
 	private static final int maxLevel = 15;
@@ -80,8 +78,7 @@ public class LampJar extends LanternBlock implements BlockTooltip<LampJar.Toolti
 		builder.add(FILL_LEVEL);
 	}
 
-	@OnlyIn(Dist.CLIENT)
-	@Override
+    @Override
 	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource rand) {
 		final int particleProbability = 5;
 
