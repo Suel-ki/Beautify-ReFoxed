@@ -76,7 +76,7 @@ public class BlockInit {
     // lamps
     public static final DeferredBlock<LampLightBulb> LAMP_LIGHT_BULB = register("lamp_light_bulb",
             LampLightBulb::new,
-            BlockBehaviour.Properties.of().mapColor(MapColor.METAL).noOcclusion()
+           BlockBehaviour.Properties.of().mapColor(MapColor.METAL).noOcclusion()
                     .strength(0.2f, 0.2f).sound(SoundType.LANTERN).lightLevel((state) -> {
                         if (state.getValue(LampLightBulb.ON)) {
                             return 14;

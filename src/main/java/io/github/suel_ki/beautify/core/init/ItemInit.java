@@ -5,7 +5,7 @@ import io.github.suel_ki.beautify.common.block.HangingPot;
 import io.github.suel_ki.beautify.common.block.Trellis;
 import io.github.suel_ki.beautify.common.tooltip.BlockTooltip;
 import io.github.suel_ki.beautify.common.tooltip.PlantableItemStackTooltip;
-import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.chat.Component;
@@ -108,7 +108,7 @@ public final class ItemInit {
 
 				@Override
 				public Optional<TooltipComponent> getTooltipImage(@NotNull ItemStack stack) {
-					if (Screen.hasControlDown()) {
+					if (Minecraft.getInstance().hasControlDown()) {
 
 						List<ItemStack> plants = HangingPot.VALID_FLOWERS
 								.stream()
@@ -217,7 +217,7 @@ public final class ItemInit {
 
                     @Override
                     public Optional<TooltipComponent> getTooltipImage(@NotNull ItemStack stack) {
-                        if (Screen.hasControlDown()) {
+                        if (Minecraft.getInstance().hasControlDown()) {
 
                             List<ItemStack> plants = Trellis.VALID_FLOWERS
                                     .stream()

@@ -1,20 +1,18 @@
 package io.github.suel_ki.beautify.particle.custom;
 
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.Particle;
-import net.minecraft.client.particle.ParticleProvider;
-import net.minecraft.client.particle.ParticleRenderType;
-import net.minecraft.client.particle.SpriteSet;
-import net.minecraft.client.particle.TextureSheetParticle;
+import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.util.RandomSource;
+import org.jetbrains.annotations.NotNull;
 
-public class GlowEssenceParticles extends TextureSheetParticle {
+public class GlowEssenceParticles extends SingleQuadParticle {
 
 	private static final float size = 0.07f;
 
-	protected GlowEssenceParticles(ClientLevel level, double xCoord, double yCoord, double zCoord, SpriteSet spriteSet,
-			double xd, double yd, double zd) {
-		super(level, xCoord, yCoord, zCoord, xd, yd, zd);
+    protected GlowEssenceParticles(ClientLevel level, double xCoord, double yCoord, double zCoord,
+                                   double xd, double yd, double zd, SpriteSet spriteSet) {
+        super(level, xCoord, yCoord, zCoord, xd, yd, zd, spriteSet.first());
 
 		this.friction = 0.8F;
 		this.xd = xd;
@@ -29,12 +27,12 @@ public class GlowEssenceParticles extends TextureSheetParticle {
 		this.bCol = 1f;
 	}
 
-	private void fadeOut() {
-		float fadeValue = (float) Math.sin(Math.PI * ((float) this.age / this.lifetime));
+    private void fadeOut() {
+        float fadeValue = (float) Math.sin(Math.PI * ((float) this.age / this.lifetime));
 
-		this.alpha = 1 * fadeValue;
-		this.quadSize = size * fadeValue;
-	}
+        this.alpha = 1 * fadeValue;
+        this.quadSize = size * fadeValue;
+    }
 
 	private void move() {
 		if(Math.random()<=0.05) {
@@ -48,10 +46,10 @@ public class GlowEssenceParticles extends TextureSheetParticle {
 		}
 	}
 
-	@Override
-	public ParticleRenderType getRenderType() {
-		return ParticleRenderType.PARTICLE_SHEET_OPAQUE;
-	}
+    @Override
+    protected @NotNull Layer getLayer() {
+        return Layer.OPAQUE;
+    }
 
 	@Override
 	public void tick() {
@@ -61,17 +59,12 @@ public class GlowEssenceParticles extends TextureSheetParticle {
 		this.move();
 	}
 
-	public static class Provider implements ParticleProvider<SimpleParticleType> {
-		private final SpriteSet sprites;
+    public record Provider(SpriteSet sprites) implements ParticleProvider<SimpleParticleType> {
 
-		public Provider(SpriteSet spriteSet) {
-			this.sprites = spriteSet;
-		}
-
-		public Particle createParticle(SimpleParticleType particleType, ClientLevel level, double x, double y, double z,
-				double dx, double dy, double dz) {
-			return new GlowEssenceParticles(level, x, y, z, this.sprites, dx, dy, dz);
-		}
-	}
+        public Particle createParticle(SimpleParticleType particleType, ClientLevel level, double x, double y, double z,
+                                           double dx, double dy, double dz, RandomSource randomSource) {
+                return new GlowEssenceParticles(level, x, y, z, dx, dy, dz, this.sprites);
+        }
+    }
 
 }

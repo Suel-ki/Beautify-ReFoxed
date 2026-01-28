@@ -1,7 +1,7 @@
 package io.github.suel_ki.beautify.client.tooltip;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
@@ -34,9 +34,9 @@ public abstract class BaseTooltipComponent implements TooltipProvider {
 
     @Override
     public final void addToTooltip(Item.TooltipContext context, Consumer<Component> consumer, TooltipFlag flag, DataComponentGetter data) {
-        if (Screen.hasShiftDown()) {
+        if (Minecraft.getInstance().hasShiftDown()) {
             addShiftTooltips(context, consumer, flag, data);
-        } else if (Screen.hasControlDown()) {
+        } else if (Minecraft.getInstance().hasControlDown()) {
             addCtrlTooltips(context, consumer, flag, data);
         } else {
             addDefaultTooltips(context, consumer, flag, data);

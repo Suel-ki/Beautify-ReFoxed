@@ -126,7 +126,7 @@ public class LampCandelabra extends LanternBlock implements BlockTooltip<LampCan
 
 	@Override
 	public void onProjectileHit(Level level, BlockState state, BlockHitResult hitResult, Projectile projectile) {
-		if (!level.isClientSide && projectile.isOnFire() && !isOn(state) && !state.getValue(WATERLOGGED)) {
+		if (!level.isClientSide() && projectile.isOnFire() && !isOn(state) && !state.getValue(WATERLOGGED)) {
 			setOn(level, state, hitResult.getBlockPos(), true);
 		}
 	}
@@ -145,7 +145,7 @@ public class LampCandelabra extends LanternBlock implements BlockTooltip<LampCan
 				return InteractionResult.SUCCESS;
 			} else if (!this.isOn(state) && playerStack.is(Items.FLINT_AND_STEEL)) {
 				setOn(level, state, pos, true);
-				playerStack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(hand));
+				playerStack.hurtAndBreak(1, player, hand);
 				return InteractionResult.SUCCESS;
 			}
 		}
