@@ -170,8 +170,8 @@ public final class ItemInit {
 	public static final DeferredItem<BlockItem> BOTANIST_WORKBENCH_ITEM = registerBlockItem(BlockInit.BOTANIST_WORKBENCH);
 
     private static DeferredItem<BlockItem> registerBlockItem(Holder<Block> holder, Function<Item.Properties, BlockItem> func) {
-        var key = holder.unwrapKey().orElseThrow().location().getPath();
-        return ITEMS.registerItem(key, func, new Item.Properties().useBlockDescriptionPrefix());
+        var key = holder.unwrapKey().orElseThrow().identifier().getPath();
+        return ITEMS.registerItem(key, func, () -> new Item.Properties().useBlockDescriptionPrefix());
     }
 
 	private static DeferredItem<BlockItem> registerBlockItem(Holder<Block> holder) {

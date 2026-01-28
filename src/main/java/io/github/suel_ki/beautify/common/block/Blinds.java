@@ -1,20 +1,18 @@
 package io.github.suel_ki.beautify.common.block;
 
+import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 
 import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
-import io.github.suel_ki.beautify.client.tooltip.BaseTooltipComponent;
+import io.github.suel_ki.beautify.client.tooltip.TooltipLore;
 import io.github.suel_ki.beautify.common.tooltip.BlockTooltip;
 import io.github.suel_ki.beautify.core.init.ComponentInit;
 import io.github.suel_ki.beautify.core.init.SoundInit;
 import io.github.suel_ki.beautify.util.BeautifyConfig;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -24,9 +22,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Explosion;
@@ -42,7 +38,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class Blinds extends HorizontalDirectionalBlock implements BlockTooltip<Blinds.TooltipComponent> {
+public class Blinds extends HorizontalDirectionalBlock implements BlockTooltip<TooltipLore> {
 	// Voxelshapes; Hidden = Blind not visible
 	private static final Map<Direction, VoxelShape> CLOSED_SHAPES = ImmutableMap.of(
 			Direction.NORTH, Block.box(0, 13, 13, 16, 16, 16),
@@ -307,27 +303,23 @@ public class Blinds extends HorizontalDirectionalBlock implements BlockTooltip<B
 	}
 
     @Override
-    public DataComponentType<TooltipComponent> getTooltipType() {
+    public DataComponentType<TooltipLore> getTooltipType() {
         return ComponentInit.BLINDS_TOOLTIP.get();
     }
 
     @Override
-    public TooltipComponent getTooltipComponent() {
+    public TooltipLore getTooltipComponent() {
         return TooltipComponent.INSTANCE;
     }
 
-    public static final class TooltipComponent extends BaseTooltipComponent {
-        public static final TooltipComponent INSTANCE = new TooltipComponent();
+    public static final class TooltipComponent {
+        public static final TooltipLore INSTANCE = TooltipLore.create(
+                List.of(Component.translatable("tooltip.beautify.blinds.1"),
+                        Component.translatable("tooltip.beautify.blinds.2")),
+                List.of()
+        );
 
-        private TooltipComponent() {}
-
-        public static final Codec<TooltipComponent> CODEC = Codec.unit(TooltipComponent::new);
-        public static final StreamCodec<RegistryFriendlyByteBuf, TooltipComponent> STREAM_CODEC = StreamCodec.unit(INSTANCE);
-
-        @Override
-        public void addShiftTooltips(Item.TooltipContext context, Consumer<Component> consumer, TooltipFlag flag, DataComponentGetter data) {
-            consumer.accept(Component.translatable("tooltip.beautify.blinds.1").withStyle(ChatFormatting.GRAY));
-            consumer.accept(Component.translatable("tooltip.beautify.blinds.2").withStyle(ChatFormatting.GRAY));
-        }
+        public static final Codec<TooltipLore> CODEC = TooltipLore.CODEC;
+        public static final StreamCodec<RegistryFriendlyByteBuf, TooltipLore> STREAM_CODEC = StreamCodec.unit(INSTANCE);
     }
 }

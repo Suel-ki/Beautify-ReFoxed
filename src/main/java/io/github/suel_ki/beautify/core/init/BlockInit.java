@@ -23,6 +23,7 @@ import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class BlockInit {
 
@@ -31,17 +32,17 @@ public class BlockInit {
     // BLOCKS
     public static final DeferredBlock<BookStack> BOOKSTACK = register("bookstack",
             BookStack::new,
-            BlockBehaviour.Properties.of().mapColor(MapColor.NONE)
+            () -> BlockBehaviour.Properties.of().mapColor(MapColor.NONE)
                     .strength(0.2F, 0.2F).sound(SoundInit.BOOKSTACK_SOUNDS).noOcclusion());
 
     public static final DeferredBlock<Rope> ROPE = register("rope",
             Rope::new,
-            BlockBehaviour.Properties.of().mapColor(MapColor.NONE)
+            () -> BlockBehaviour.Properties.of().mapColor(MapColor.NONE)
                     .strength(0.2F, 0.2F).sound(SoundType.WOOL).pushReaction(PushReaction.DESTROY).noOcclusion());
 
     public static final DeferredBlock<HangingPot> HANGING_POT = register("hanging_pot",
             HangingPot::new,
-            BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_BROWN)
+            () -> BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_BROWN)
                     .noOcclusion().strength(0.1f, 0.1f).sound(SoundType.STONE).lightLevel((state) -> {
                         if (state.getValue(HangingPot.POTFLOWER) == 15) {
                             return 7;
@@ -76,7 +77,7 @@ public class BlockInit {
     // lamps
     public static final DeferredBlock<LampLightBulb> LAMP_LIGHT_BULB = register("lamp_light_bulb",
             LampLightBulb::new,
-           BlockBehaviour.Properties.of().mapColor(MapColor.METAL).noOcclusion()
+            () -> BlockBehaviour.Properties.of().mapColor(MapColor.METAL).noOcclusion()
                     .strength(0.2f, 0.2f).sound(SoundType.LANTERN).lightLevel((state) -> {
                         if (state.getValue(LampLightBulb.ON)) {
                             return 14;
@@ -87,7 +88,7 @@ public class BlockInit {
 
     public static final DeferredBlock<LampBamboo> LAMP_BAMBOO = register("lamp_bamboo",
             LampBamboo::new,
-            BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).noOcclusion()
+            () -> BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).noOcclusion()
                     .strength(0.1f, 0.1f).sound(SoundType.SCAFFOLDING).lightLevel((state) -> {
                         if (state.getValue(LampBamboo.ON)) {
                             return 14;
@@ -98,7 +99,7 @@ public class BlockInit {
 
     public static final DeferredBlock<LampJar> LAMP_JAR = register("lamp_jar",
             LampJar::new,
-            BlockBehaviour.Properties.of().mapColor(MapColor.NONE).noOcclusion()
+            () -> BlockBehaviour.Properties.of().mapColor(MapColor.NONE).noOcclusion()
                     .strength(0.05f, 0.05f).sound(SoundType.GLASS).lightLevel((state) -> {
                         final int fill = state.getValue(LampJar.FILL_LEVEL);
                         return switch (fill) {
@@ -215,14 +216,14 @@ public class BlockInit {
     // workbench
     public static final DeferredBlock<BotanistWorkbench> BOTANIST_WORKBENCH = register("botanist_workbench",
             BotanistWorkbench::new,
-            BlockBehaviour.Properties.ofFullCopy(Blocks.CRAFTING_TABLE));
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.CRAFTING_TABLE));
 
-    private static <T extends Block> DeferredBlock<T> register(String name, Function<BlockBehaviour.Properties, ? extends T> func, BlockBehaviour.Properties props) {
+    private static <T extends Block> DeferredBlock<T> register(String name, Function<BlockBehaviour.Properties, ? extends T> func, Supplier<BlockBehaviour.Properties> props) {
         return BLOCKS.registerBlock(name, func, props);
     }
 
     private static DeferredBlock<LampCandelabra> registerLampCandelabra(String name) {
-        return register(name, LampCandelabra::new, BlockBehaviour.Properties.of().mapColor(MapColor.METAL).noOcclusion()
+        return register(name, LampCandelabra::new, () -> BlockBehaviour.Properties.of().mapColor(MapColor.METAL).noOcclusion()
                 .strength(0.2f, 0.2f).sound(SoundType.LANTERN).lightLevel((state) -> {
                     if (state.getValue(LampCandelabra.ON)) {
                         return 14;
@@ -233,17 +234,17 @@ public class BlockInit {
     }
 
     private static DeferredBlock<Trellis> registerTrellis(String name) {
-        return register(name, Trellis::new, BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).mapColor(MapColor.WOOD)
+        return register(name, Trellis::new, () -> BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).mapColor(MapColor.WOOD)
                 .strength(0.3F, 0.3F).sound(SoundType.BAMBOO).noOcclusion());
     }
 
     private static DeferredBlock<PictureFrame> registerPictureFrame(String name, MapColor color, SoundType type) {
-        return register(name, PictureFrame::new, BlockBehaviour.Properties.of().mapColor(color).noOcclusion()
+        return register(name, PictureFrame::new, () -> BlockBehaviour.Properties.of().mapColor(color).noOcclusion()
                 .strength(0.1f, 0.1f).sound(type).noOcclusion().pushReaction(PushReaction.DESTROY));
     }
 
     private static DeferredBlock<Blinds> registerBlinds(String name, MapColor color, SoundType type) {
-        return register(name, Blinds::new, BlockBehaviour.Properties.of().mapColor(color).noOcclusion()
+        return register(name, Blinds::new, () -> BlockBehaviour.Properties.of().mapColor(color).noOcclusion()
                 .strength(0.4f, 0.4f).sound(type));
     }
 }
