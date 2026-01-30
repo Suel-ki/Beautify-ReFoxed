@@ -1,5 +1,6 @@
 package io.github.suel_ki.beautify;
 
+import io.github.suel_ki.beautify.compat.every_compat.EveryCompatIntegration;
 import io.github.suel_ki.beautify.core.init.*;
 import io.github.suel_ki.beautify.particle.ParticleInit;
 import io.github.suel_ki.beautify.util.BeautifyConfig;
@@ -15,6 +16,7 @@ import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.common.NeoForge;
@@ -40,6 +42,10 @@ public class Beautify {
         SoundInit.SOUND_EVENTS.register(bus);
         ParticleInit.PARTICLE_TYPES.register(bus);
         CreativeModeTabInit.CREATIVE_MODE_TABS.register(bus);
+
+        if (ModList.get().isLoaded("everycomp")) {
+            EveryCompatIntegration.register();
+        }
 
         modContainer.registerConfig(ModConfig.Type.SERVER, BeautifyConfig.SPEC);
 		// Add new buildings to villages

@@ -12,20 +12,6 @@ tasks.named('wrapper', Wrapper).configure {
 version = mod_version
 group = mod_group_id
 
-repositories {
-    maven {
-        name = "Shedaniel Maven"
-        url "https://maven.shedaniel.me/"
-    }
-    maven {
-        name = "Modrinth"
-        url = "https://api.modrinth.com/maven"
-        content {
-            includeGroup "maven.modrinth"
-        }
-    }
-}
-
 base {
     archivesName = mod_id + "+" + minecraft_version
 }
@@ -84,9 +70,25 @@ configurations {
     runtimeClasspath.extendsFrom localRuntime
 }
 
+repositories {
+    maven {
+        name = "Shedaniel Maven"
+        url "https://maven.shedaniel.me/"
+    }
+    maven {
+        name = "Modrinth"
+        url = "https://api.modrinth.com/maven"
+        content {
+            includeGroup "maven.modrinth"
+        }
+    }
+}
+
 dependencies {
     implementation "me.shedaniel.cloth:cloth-config-neoforge:${cloth_config_version}"
     implementation "maven.modrinth:jade:${jade_version}+neoforge"
+    compileOnly "maven.modrinth:every-compat:${every_compat_version}"
+    compileOnly "maven.modrinth:moonlight:${moonlight_version}"
 }
 
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
