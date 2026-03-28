@@ -2,6 +2,8 @@ package io.github.suel_ki.beautify.core.init;
 
 import io.github.suel_ki.beautify.Beautify;
 import com.google.common.collect.ImmutableSet;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -47,7 +49,8 @@ public class ModVillagers {
 
         VILLAGER_PROFESSIONS.register(name, () -> new VillagerProfession(
                 Component.translatable("entity." + key.identifier().getNamespace() + ".villager." + key.identifier().getPath()),
-                heldWorkstation, acquirableWorkstation, gatherableItems, secondaryJobSites, workSound)
+                heldWorkstation, acquirableWorkstation, gatherableItems, secondaryJobSites, workSound,
+                new Int2ObjectOpenHashMap<>(Int2ObjectMap.ofEntries(Int2ObjectMap.entry(1, TradesInit.BOTANIST_LEVEL_1), Int2ObjectMap.entry(2, TradesInit.BOTANIST_LEVEL_2), Int2ObjectMap.entry(3, TradesInit.BOTANIST_LEVEL_3), Int2ObjectMap.entry(4, TradesInit.BOTANIST_LEVEL_4), Int2ObjectMap.entry(5, TradesInit.BOTANIST_LEVEL_5))))
         );
         return key;
     }

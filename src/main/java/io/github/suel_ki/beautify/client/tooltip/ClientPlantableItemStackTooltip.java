@@ -3,7 +3,7 @@ package io.github.suel_ki.beautify.client.tooltip;
 import io.github.suel_ki.beautify.common.tooltip.PlantableItemStackTooltip;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
@@ -36,7 +36,7 @@ public class ClientPlantableItemStackTooltip implements ClientTooltipComponent, 
     }
 
     @Override
-    public void renderImage(Font font, int tooltipX, int tooltipY, int k, int l, GuiGraphics graphics) {
+    public void extractImage(Font font, int tooltipX, int tooltipY, int k, int l, GuiGraphicsExtractor graphics) {
         int slotSize = SLOT_SIZE;
         int x = tooltipX;
         int y = tooltipY + font.lineHeight + 3;
@@ -44,8 +44,8 @@ public class ClientPlantableItemStackTooltip implements ClientTooltipComponent, 
         for (var plant : this.plants) {
 
             graphics.blitSprite(RenderPipelines.GUI_TEXTURED, TEXTURE_LOCATION, x - 1, y - 1, 24, 24);
-            graphics.renderItem(plant, x + 3, y + 3);
-            graphics.renderItemDecorations(font, plant, x + 3, y + 3);
+            graphics.item(plant, x + 3, y + 3);
+            graphics.itemDecorations(font, plant, x + 3, y + 3);
 
             x += slotSize;
 
@@ -55,7 +55,7 @@ public class ClientPlantableItemStackTooltip implements ClientTooltipComponent, 
             }
         }
 
-        graphics.drawString(font, TEXT, tooltipX, tooltipY, -1);
+        graphics.text(font, TEXT, tooltipX, tooltipY, -1);
     }
 
     @Override

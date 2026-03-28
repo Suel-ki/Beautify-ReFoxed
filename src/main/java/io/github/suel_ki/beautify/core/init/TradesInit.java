@@ -1,217 +1,22 @@
 package io.github.suel_ki.beautify.core.init;
 
 import io.github.suel_ki.beautify.Beautify;
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
-import net.minecraft.world.entity.npc.villager.VillagerTrades;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.trading.ItemCost;
-import net.minecraft.world.item.trading.MerchantOffer;
-import net.neoforged.bus.api.SubscribeEvent;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.trading.TradeSet;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.event.village.VillagerTradesEvent;
-
-import java.util.List;
-
 
 @EventBusSubscriber(modid = Beautify.MODID)
 public class TradesInit {
+    public static final ResourceKey<TradeSet> BOTANIST_LEVEL_1 = resourceKey("botanist/level_1");
+    public static final ResourceKey<TradeSet> BOTANIST_LEVEL_2 = resourceKey("botanist/level_2");
+    public static final ResourceKey<TradeSet> BOTANIST_LEVEL_3 = resourceKey("botanist/level_3");
+    public static final ResourceKey<TradeSet> BOTANIST_LEVEL_4 = resourceKey("botanist/level_4");
+    public static final ResourceKey<TradeSet> BOTANIST_LEVEL_5 = resourceKey("botanist/level_5");
 
-    @SubscribeEvent
-    public static void addCustomTrades(VillagerTradesEvent event) {
-        // BOTANIST
-        // lvl1
-        if (event.getType() == ModVillagers.BOTANIST) {
-            Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
-            ItemStack stack = new ItemStack(ItemInit.HANGING_POT_ITEM.get(), 1);
-            int villagerLevel = 1;
-
-            trades.get(villagerLevel)
-                    .add((level, trader, rand) -> new MerchantOffer(new ItemCost(Items.EMERALD, 2), stack, 16, 6, 0.02F));
-        }
-
-        if (event.getType() == ModVillagers.BOTANIST) {
-            Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
-            ItemStack stack = new ItemStack(Items.FLOWER_POT, 2);
-            int villagerLevel = 1;
-
-            trades.get(villagerLevel)
-                    .add((level, trader, rand) -> new MerchantOffer(new ItemCost(Items.EMERALD, 3), stack, 12, 5, 0.02F));
-        }
-
-        if (event.getType() == ModVillagers.BOTANIST) {
-            Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
-            ItemStack stack = new ItemStack(Items.VINE, 3);
-            int villagerLevel = 1;
-
-            trades.get(villagerLevel)
-                    .add((level, trader, rand) -> new MerchantOffer(new ItemCost(Items.EMERALD, 2), stack, 16, 4, 0.02F));
-        }
-
-        // lvl2
-        if (event.getType() == ModVillagers.BOTANIST) {
-            Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
-            ItemStack stack = new ItemStack(ItemInit.OAK_TRELLIS_ITEM.get(), 2);
-            int villagerLevel = 2;
-
-            trades.get(villagerLevel)
-                    .add((level, trader, rand) -> new MerchantOffer(new ItemCost(Items.EMERALD, 1), stack, 16, 3, 0.02F));
-        }
-
-        if (event.getType() == ModVillagers.BOTANIST) {
-            Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
-            ItemStack stack = new ItemStack(ItemInit.SPRUCE_TRELLIS_ITEM.get(), 2);
-            int villagerLevel = 2;
-
-            trades.get(villagerLevel)
-                    .add((level, trader, rand) -> new MerchantOffer(new ItemCost(Items.EMERALD, 1), stack, 16, 3, 0.02F));
-        }
-
-        if (event.getType() == ModVillagers.BOTANIST) {
-            Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
-            ItemStack stack = new ItemStack(ItemInit.BIRCH_TRELLIS_ITEM.get(), 2);
-            int villagerLevel = 2;
-
-            trades.get(villagerLevel)
-                    .add((level, trader, rand) -> new MerchantOffer(new ItemCost(Items.EMERALD, 1), stack, 16, 3, 0.02F));
-        }
-
-        if (event.getType() == ModVillagers.BOTANIST) {
-            Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
-            ItemStack stack = new ItemStack(ItemInit.JUNGLE_TRELLIS_ITEM.get(), 2);
-            int villagerLevel = 2;
-
-            trades.get(villagerLevel)
-                    .add((level, trader, rand) -> new MerchantOffer(new ItemCost(Items.EMERALD, 1), stack, 16, 3, 0.02F));
-        }
-
-        if (event.getType() == ModVillagers.BOTANIST) {
-            Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
-            ItemStack stack = new ItemStack(ItemInit.ACACIA_TRELLIS_ITEM.get(), 2);
-            int villagerLevel = 2;
-
-            trades.get(villagerLevel)
-                    .add((level, trader, rand) -> new MerchantOffer(new ItemCost(Items.EMERALD, 1), stack, 16, 3, 0.02F));
-        }
-
-        if (event.getType() == ModVillagers.BOTANIST) {
-            Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
-            ItemStack stack = new ItemStack(ItemInit.DARK_OAK_TRELLIS_ITEM.get(), 2);
-            int villagerLevel = 2;
-
-            trades.get(villagerLevel)
-                    .add((level, trader, rand) -> new MerchantOffer(new ItemCost(Items.EMERALD, 1), stack, 16, 3, 0.02F));
-        }
-
-        if (event.getType() == ModVillagers.BOTANIST) {
-            Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
-            ItemStack stack = new ItemStack(ItemInit.MANGROVE_TRELLIS_ITEM.get(), 2);
-            int villagerLevel = 2;
-
-            trades.get(villagerLevel)
-                    .add((level, trader, rand) -> new MerchantOffer(new ItemCost(Items.EMERALD, 1), stack, 16, 3, 0.02F));
-        }
-
-        if (event.getType() == ModVillagers.BOTANIST) {
-            Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
-            ItemStack stack = new ItemStack(ItemInit.CRIMSON_TRELLIS_ITEM.get(), 2);
-            int villagerLevel = 2;
-
-            trades.get(villagerLevel)
-                    .add((level, trader, rand) -> new MerchantOffer(new ItemCost(Items.EMERALD, 1), stack, 16, 3, 0.02F));
-        }
-
-        if (event.getType() == ModVillagers.BOTANIST) {
-            Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
-            ItemStack stack = new ItemStack(ItemInit.CHERRY_TRELLIS_ITEM.get(), 2);
-            int villagerLevel = 2;
-
-            trades.get(villagerLevel)
-                    .add((level, trader, rand) -> new MerchantOffer(new ItemCost(Items.EMERALD, 1), stack, 16, 3, 0.02F));
-        }
-
-        if (event.getType() == ModVillagers.BOTANIST) {
-            Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
-            ItemStack stack = new ItemStack(ItemInit.WARPED_TRELLIS_ITEM.get(), 2);
-            int villagerLevel = 2;
-
-            trades.get(villagerLevel)
-                    .add((level, trader, rand) -> new MerchantOffer(new ItemCost(Items.EMERALD, 1), stack, 16, 3, 0.02F));
-        }
-
-        if (event.getType() == ModVillagers.BOTANIST) {
-            Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
-            ItemStack stack = new ItemStack(Items.BIG_DRIPLEAF, 3);
-            int villagerLevel = 2;
-
-            trades.get(villagerLevel)
-                    .add((level, trader, rand) -> new MerchantOffer(new ItemCost(Items.EMERALD, 4), stack, 6, 9, 0.02F));
-        }
-
-        if (event.getType() == ModVillagers.BOTANIST) {
-            Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
-            ItemStack stack = new ItemStack(Items.SMALL_DRIPLEAF, 4);
-            int villagerLevel = 2;
-
-            trades.get(villagerLevel)
-                    .add((level, trader, rand) -> new MerchantOffer(new ItemCost(Items.EMERALD, 3), stack, 6, 8, 0.02F));
-        }
-
-        // lvl3
-        if (event.getType() == ModVillagers.BOTANIST) {
-            Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
-            ItemStack stack = new ItemStack(Items.LILY_PAD, 4);
-            int villagerLevel = 3;
-
-            trades.get(villagerLevel)
-                    .add((level, trader, rand) -> new MerchantOffer(new ItemCost(Items.EMERALD, 1), stack, 8, 5, 0.02F));
-        }
-
-        if (event.getType() == ModVillagers.BOTANIST) {
-            Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
-            ItemStack stack = new ItemStack(Items.SPORE_BLOSSOM, 1);
-            int villagerLevel = 3;
-
-            trades.get(villagerLevel)
-                    .add((level, trader, rand) -> new MerchantOffer(new ItemCost(Items.EMERALD, 3), stack, 12, 10, 0.02F));
-        }
-
-        // lvl 4
-        if (event.getType() == ModVillagers.BOTANIST) {
-            Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
-            ItemStack stack = new ItemStack(Items.MOSS_BLOCK, 2);
-            int villagerLevel = 4;
-
-            trades.get(villagerLevel)
-                    .add((level, trader, rand) -> new MerchantOffer(new ItemCost(Items.EMERALD, 1), stack, 48, 3, 0.02F));
-        }
-
-        if (event.getType() == ModVillagers.BOTANIST) {
-            Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
-            ItemStack stack = new ItemStack(Items.FLOWERING_AZALEA, 1);
-            int villagerLevel = 4;
-
-            trades.get(villagerLevel)
-                    .add((level, trader, rand) -> new MerchantOffer(new ItemCost(Items.EMERALD, 2), stack, 16, 7, 0.02F));
-        }
-
-        // lvl 5
-        if (event.getType() == ModVillagers.BOTANIST) {
-            Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
-            ItemStack stack = new ItemStack(Items.ROOTED_DIRT, 4);
-            int villagerLevel = 5;
-
-            trades.get(villagerLevel)
-                    .add((level, trader, rand) -> new MerchantOffer(new ItemCost(Items.EMERALD, 1), stack, 24, 3, 0.02F));
-        }
-
-        if (event.getType() == ModVillagers.BOTANIST) {
-            Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
-            ItemStack stack = new ItemStack(Items.HANGING_ROOTS, 3);
-            int villagerLevel = 5;
-
-            trades.get(villagerLevel)
-                    .add((level, trader, rand) -> new MerchantOffer(new ItemCost(Items.EMERALD, 1), stack, 10, 7, 0.02F));
-        }
+    public static ResourceKey<TradeSet> resourceKey(final String path) {
+        return ResourceKey.create(Registries.TRADE_SET, Beautify.id(path));
     }
+
+    public static void init() {}
 }
