@@ -40,7 +40,7 @@ public class ConfigScreen {
             builder.setEditable(false);
             return builder.build();
         }
-        builder.setEditable(Minecraft.getInstance().isSingleplayer());
+        builder.setEditable(Minecraft.getInstance().hasSingleplayerServer());
 
         ConfigEntryBuilder eb = builder.entryBuilder();
 
