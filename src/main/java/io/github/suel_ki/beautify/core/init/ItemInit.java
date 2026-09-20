@@ -8,17 +8,18 @@ import io.github.suel_ki.beautify.common.tooltip.PlantableItemStackTooltip;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.component.CookingFuel;
 import net.minecraft.world.item.component.TooltipDisplay;
-import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.FuelValues;
+import net.minecraft.world.level.storage.loot.providers.number.floats.ResolvableFloat;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ResolvableInt;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -123,7 +124,7 @@ public final class ItemInit {
 
 			});
 
-	public static final DeferredItem<BlockItem> BOOKSTACK_ITEM = registerBlockItem(BlockInit.BOOKSTACK);
+	public static final DeferredItem<BlockItem> BOOKSTACK_ITEM = registerBurnBlockItem(BlockInit.BOOKSTACK, 100);
 
 	public static final DeferredItem<BlockItem> LAMP_LIGHT_BULB_ITEM = registerBlockItem(BlockInit.LAMP_LIGHT_BULB);
 
@@ -192,16 +193,15 @@ public final class ItemInit {
         return registerBlockItem(holder,
                 (properties) -> {
                     BlockTooltip<?> tooltipBlock = (BlockTooltip<?>) holder.value();
-                    return new BlockItem(holder.value(), properties.component((DataComponentType<Object>) tooltipBlock.getTooltipType(), tooltipBlock.getTooltipComponent())) {
-
+                    return new BlockItem(holder.value(), properties
+							.component((DataComponentType<Object>) tooltipBlock.getTooltipType(), tooltipBlock.getTooltipComponent())
+							.component(DataComponents.COOKING_FUEL,
+									new CookingFuel(new ResolvableInt.Constant(burnTime),
+											new ResolvableFloat.Constant(1.0f))))
+					{
                         @Override
                         public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> consumer, TooltipFlag flag) {
                             stack.addToTooltip(tooltipBlock.getTooltipType(), context, display, consumer, flag);
-                        }
-
-                        @Override
-                        public int getBurnTime(ItemStack itemStack, @Nullable RecipeType<?> recipeType, FuelValues fuelValues) {
-                            return burnTime;
                         }
                     };
                 });
@@ -209,7 +209,11 @@ public final class ItemInit {
     
 	private static DeferredItem<BlockItem> registerTrellis(Holder<Block> holder) {
         return registerBlockItem(holder,
-                (properties) -> new BlockItem(holder.value(), properties.component(ComponentInit.TRELLIS_TOOLTIP.get(), Trellis.TooltipComponent.INSTANCE)) {
+                (properties) -> new BlockItem(holder.value(), properties
+						.component(ComponentInit.TRELLIS_TOOLTIP.get(), Trellis.TooltipComponent.INSTANCE)
+						.component(DataComponents.COOKING_FUEL,
+								new CookingFuel(new ResolvableInt.Constant(300),
+										new ResolvableFloat.Constant(1.0f)))) {
                     @Override
                     public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> consumer, TooltipFlag flag) {
                         stack.addToTooltip(ComponentInit.TRELLIS_TOOLTIP.get(), context, display, consumer, flag);
@@ -229,12 +233,6 @@ public final class ItemInit {
                             return super.getTooltipImage(stack);
                         }
                     }
-
-                    @Override
-                    public int getBurnTime(ItemStack itemStack, @Nullable RecipeType<?> recipeType, FuelValues fuelValues) {
-                        return 300;
-                    }
-
                 });
     }
 }

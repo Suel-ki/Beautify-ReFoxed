@@ -6,7 +6,6 @@ import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.MapCodec;
 import io.github.suel_ki.beautify.client.tooltip.TooltipLore;
 import io.github.suel_ki.beautify.common.tooltip.BlockTooltip;
 import io.github.suel_ki.beautify.core.init.ComponentInit;
@@ -56,16 +55,9 @@ public class Trellis extends HorizontalDirectionalBlock implements BlockTooltip<
 			Direction.EAST, Block.box(0, 0, 0, 2, 16, 16)
 	);
 
-	public static final MapCodec<Trellis> CODEC = simpleCodec(Trellis::new);
-
 	public Trellis(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.defaultBlockState().setValue(CEILLING, false).setValue(FACING, Direction.NORTH));
-	}
-
-	@Override
-	protected MapCodec<Trellis> codec() {
-		return CODEC;
 	}
 
 	public List<Item> getValidFlowers() {

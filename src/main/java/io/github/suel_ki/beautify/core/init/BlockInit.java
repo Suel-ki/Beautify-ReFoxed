@@ -38,7 +38,7 @@ public class BlockInit {
     public static final DeferredBlock<Rope> ROPE = register("rope",
             Rope::new,
             () -> BlockBehaviour.Properties.of().mapColor(MapColor.NONE)
-                    .strength(0.2F, 0.2F).sound(SoundType.WOOL).pushReaction(PushReaction.DESTROY).noOcclusion());
+                    .strength(0.2F, 0.2F).sound(SoundType.WOOL).pushReaction(PushReaction.POPPED).noOcclusion());
 
     public static final DeferredBlock<HangingPot> HANGING_POT = register("hanging_pot",
             HangingPot::new,
@@ -240,7 +240,7 @@ public class BlockInit {
 
     private static DeferredBlock<PictureFrame> registerPictureFrame(String name, MapColor color, SoundType type) {
         return register(name, PictureFrame::new, () -> BlockBehaviour.Properties.of().mapColor(color).noOcclusion()
-                .strength(0.1f, 0.1f).sound(type).noOcclusion().pushReaction(PushReaction.DESTROY));
+                .strength(0.1f, 0.1f).sound(type).noOcclusion().pushReaction(PushReaction.POPPED));
     }
 
     private static DeferredBlock<Blinds> registerBlinds(String name, MapColor color, SoundType type) {

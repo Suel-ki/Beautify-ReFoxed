@@ -8,7 +8,7 @@ modId="${mod_id}"
 version="${mod_version}"
 displayName="${mod_name}"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/beautify-refoxed"
-logoFile="icon.png"
+iconFile="icon.png"
 authors="Suel_ki, Pandarix"
 description='''
 Beautify adds lots of vanilla-styled ways to spice up your builds with custom models that'll fit right in to your houses etc.
