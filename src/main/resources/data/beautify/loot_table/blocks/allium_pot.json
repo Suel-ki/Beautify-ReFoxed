@@ -25,15 +25,13 @@
 				{
 					"type": "minecraft:item",
 					"name": "minecraft:allium",
-					"conditions": [
-						{
-							"condition": "minecraft:block_state_property",
-							"block": "beautify:hanging_pot",
-							"properties": {
-								"grown": "true"
-							}
+					"condition": {
+						"type": "minecraft:match_block",
+						"blocks": "beautify:hanging_pot",
+						"state": {
+							"grown": "true"
 						}
-					]
+					}
 				}
 			]
 		}
